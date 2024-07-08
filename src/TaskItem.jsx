@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { IoCheckmarkOutline } from "react-icons/io5";
 import { FiEdit } from "react-icons/fi";
+import { BiDotsVerticalRounded } from "react-icons/bi";
 import { GoTrash } from "react-icons/go";
 
 const TaskItem = ({taskItem, taskItems, setTaskItems, onEditTask}) => {
+  const [controlToggle, setControlToggle] = useState(false)
 
   const handleCheck = () => {
     console.log(taskItem)
@@ -30,7 +32,7 @@ const TaskItem = ({taskItem, taskItems, setTaskItems, onEditTask}) => {
             onClick={handleCheck}
           >
             {taskItem.checked ? (
-              <span className="w-full h-full bg-blue-600 p-1 flex items-center justify-center text-white">
+              <span className="w-full h-full bg-blue-600 p-1 flex shrink-0 items-center justify-center text-white">
                 <IoCheckmarkOutline />
               </span>
             ) : (
@@ -40,7 +42,7 @@ const TaskItem = ({taskItem, taskItems, setTaskItems, onEditTask}) => {
           <span
             className={`${
               taskItem.checked ? "line-through text-gray-500" : ""
-            } flex items-center gap-[1rem]`}
+            } flex items-center gap-[1rem] text-[.8rem]`}
           >
             {taskItem.value}{" "}
             <span className="date text-[.8rem] text-gray-400">{`created on ${taskItem.date}`}</span>
@@ -61,19 +63,43 @@ const TaskItem = ({taskItem, taskItems, setTaskItems, onEditTask}) => {
           </span>
         </div>
       </div>
-      <div className="controls flex items-center gap-[.8rem]">
-        <button
-          onClick={() => onEditTask(taskItem)}
-          className="edit__btn p-2 text-white text-[1.2rem]"
-        >
-          <FiEdit />
-        </button>
-        <button
-          onClick={handleDelete}
-          className="delete__btn p-2  text-white text-[1.2rem]"
-        >
-          <GoTrash />
-        </button>
+      <div className="controls__container">
+          <div className="controls hidden md:flex items-center gap-[.8rem]">
+            <button
+              onClick={() => onEditTask(taskItem)}
+              className="edit__btn p-2 text-white text-[1.2rem]"
+            >
+              <FiEdit />
+            </button>
+            <button
+              onClick={handleDelete}
+              className="delete__btn p-2  text-white text-[1.2rem]"
+            >
+              <GoTrash />
+            </button>
+          </div>
+
+          <div className="mobile__controls-container md:hidden relative">
+            <span onClick={() => setControlToggle(true)} className="toggle__btn text-[1.2rem] cursor-pointer">
+              <BiDotsVerticalRounded />
+            </span>
+            {controlToggle && 
+            <div className="mobile__controls-board absolute top-[1rem] right-[.6rem] bg-[#212733] shadow p-[1rem] rounded-[.5rem]">
+              <button
+                onClick={() => onEditTask(taskItem)}
+                className="edit__btn p-2 text-white text-[1.2rem]"
+              >
+                <FiEdit />
+              </button>
+              <button
+                onClick={handleDelete}
+                className="delete__btn p-2  text-white text-[1.2rem]"
+              >
+                <GoTrash />
+              </button>
+            </div>
+            }
+          </div>
       </div>
     </div>
   );
