@@ -1,26 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { IoCheckmarkOutline } from "react-icons/io5";
 import { FiEdit } from "react-icons/fi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { GoTrash } from "react-icons/go";
+import { TaskContext } from '../TaskContext';
 
-const TaskItem = ({taskItem, taskItems, setTaskItems, onEditTask}) => {
-  const [controlToggle, setControlToggle] = useState(false)
-
-  const handleCheck = () => {
-    console.log(taskItem)
-    const updatedItems = taskItems.map(item => item.id === taskItem.id ? {...taskItem, checked: !taskItem.checked} : item)
-    setTaskItems(updatedItems)
-  }
-
-  const handleDelete = () => {
-    console.log(taskItem)
-    const updatedItems = taskItems.filter(item => item.id !== taskItem.id)
-    setTaskItems(updatedItems)
-  }
+const TaskItem = ({taskItem}) => {
+  const { taskItems, setTaskItems, handleEditTask, setCurrentTask, setIsEditModalOpen, handleDelete} = useContext(TaskContext);
+  const [controlToggle, setControlToggle] = useState(false);
 
   // Due Date Calculation
   const isOverdue = new Date(taskItem.dueDate) < new Date();
+  
+  // Check Task
+  const handleCheck = () => {
+    const updatedItems = taskItems.map((item) =>
+      item.id === taskItem.id
+        ? { ...taskItem, checked: !taskItem.checked }
+        : item
+    );
+    setTaskItems(updatedItems);
+  };
+
 
 
   return (
@@ -66,7 +67,7 @@ const TaskItem = ({taskItem, taskItems, setTaskItems, onEditTask}) => {
       <div className="controls__container">
           <div className="controls hidden md:flex items-center gap-[.8rem]">
             <button
-              onClick={() => onEditTask(taskItem)}
+              onClick={() => handleEditTask(taskItem)}
               className="edit__btn p-2 text-white text-[1.2rem]"
             >
               <FiEdit />
@@ -86,7 +87,7 @@ const TaskItem = ({taskItem, taskItems, setTaskItems, onEditTask}) => {
             {controlToggle && 
             <div className="mobile__controls-board absolute top-[1rem] right-[.6rem] bg-[#212733] shadow p-[1rem] rounded-[.5rem]">
               <button
-                onClick={() => onEditTask(taskItem)}
+                onClick={() => handleEditTask(taskItem)}
                 className="edit__btn p-2 text-white text-[1.2rem]"
               >
                 <FiEdit />

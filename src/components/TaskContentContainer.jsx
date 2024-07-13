@@ -1,8 +1,12 @@
 import React from "react";
-import TaskItem from "./TaskItem";
+import TaskItem from './TaskItem'
 import { Reorder } from "framer-motion";
+import { useContext } from "react";
+import { TaskContext } from "../TaskContext";
 
-const TaskContentContainer = ({ taskItems, setTaskItems, onEditTask }) => {
+const TaskContentContainer = () => {
+  const {taskItems, setTaskItems} = useContext(TaskContext)
+
   return (
     <div>
       <Reorder.Group values={taskItems} onReorder={setTaskItems}>
@@ -11,12 +15,7 @@ const TaskContentContainer = ({ taskItems, setTaskItems, onEditTask }) => {
         ) : (
           taskItems.map((taskItem) => (
             <Reorder.Item value={taskItem} key={taskItem.id}>
-              <TaskItem
-                taskItems={taskItems}
-                onEditTask={onEditTask}
-                setTaskItems={setTaskItems}
-                taskItem={taskItem}
-              />
+              <TaskItem taskItem={taskItem} />
             </Reorder.Item>
           ))
         )}
