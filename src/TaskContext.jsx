@@ -63,8 +63,8 @@ const TaskProvider = ({children}) => {
        setCurrentTask(null);
      };
 
-     const handleDeleteTask = (id) => {
-       const updatedTasks = taskItems.filter((item) => item.id !== id);
+     const handleDeleteTask = (taskItem) => {
+       const updatedTasks = taskItems.filter((item) => item !== taskItem);
        setTaskItems(updatedTasks);
      };
 
