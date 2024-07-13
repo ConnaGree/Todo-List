@@ -6,7 +6,7 @@ import { GoTrash } from "react-icons/go";
 import { TaskContext } from '../TaskContext';
 
 const TaskItem = ({taskItem}) => {
-  const { taskItems, setTaskItems, handleEditTask, setCurrentTask, setIsEditModalOpen, handleDelete} = useContext(TaskContext);
+  const { taskItems, setTaskItems, handleEditTask, handleDeleteTask} = useContext(TaskContext);
   const [controlToggle, setControlToggle] = useState(false);
 
   // Due Date Calculation
@@ -65,26 +65,29 @@ const TaskItem = ({taskItem}) => {
         </div>
       </div>
       <div className="controls__container">
-          <div className="controls hidden md:flex items-center gap-[.8rem]">
-            <button
-              onClick={() => handleEditTask(taskItem)}
-              className="edit__btn p-2 text-white text-[1.2rem]"
-            >
-              <FiEdit />
-            </button>
-            <button
-              onClick={handleDelete}
-              className="delete__btn p-2  text-white text-[1.2rem]"
-            >
-              <GoTrash />
-            </button>
-          </div>
+        <div className="controls hidden md:flex items-center gap-[.8rem]">
+          <button
+            onClick={() => handleEditTask(taskItem)}
+            className="edit__btn p-2 text-white text-[1.2rem]"
+          >
+            <FiEdit />
+          </button>
+          <button
+            onClick={() => handleDeleteTask(taskItem)}
+            className="delete__btn p-2  text-white text-[1.2rem]"
+          >
+            <GoTrash />
+          </button>
+        </div>
 
-          <div className="mobile__controls-container md:hidden relative">
-            <span onClick={() => setControlToggle(true)} className="toggle__btn text-[1.2rem] cursor-pointer">
-              <BiDotsVerticalRounded />
-            </span>
-            {controlToggle && 
+        <div className="mobile__controls-container md:hidden relative">
+          <span
+            onClick={() => setControlToggle(true)}
+            className="toggle__btn text-[1.2rem] cursor-pointer"
+          >
+            <BiDotsVerticalRounded />
+          </span>
+          {controlToggle && (
             <div className="mobile__controls-board absolute top-[1rem] right-[.6rem] bg-[#212733] shadow p-[1rem] rounded-[.5rem]">
               <button
                 onClick={() => handleEditTask(taskItem)}
@@ -93,14 +96,14 @@ const TaskItem = ({taskItem}) => {
                 <FiEdit />
               </button>
               <button
-                onClick={handleDelete}
+                onClick={() => handleDeleteTask(taskItem)}
                 className="delete__btn p-2  text-white text-[1.2rem]"
               >
                 <GoTrash />
               </button>
             </div>
-            }
-          </div>
+          )}
+        </div>
       </div>
     </div>
   );
